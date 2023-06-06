@@ -20,7 +20,7 @@ class CafeKioskTest {
     @Test
     @DisplayName("키오스크에 음료 추가가 정상적으로 되는가?")
     public void add() throws Exception {
-        //given
+        //given;;
         CafeKiosk cafeKiosk = new CafeKiosk();
 
         //when
