@@ -16,7 +16,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CafeKioskTest {
-    
+    /**
+     * TDD Cycle
+     * Red(실패하는코드 = 구현을 하지 않은 테스트 메소드 그 자체인 상태)
+     * Green(Red 에서 구현을 한 상태, 최대한 빠르게 Green을 보는것이 목표. 주먹구구식 구현도 허용)
+     * Refactor(더 나은 구조로 리팩토링. 하지만 이때도 Green을 유지해야함)
+     */
+
     @Test
     @DisplayName("키오스크에 음료 추가가 정상적으로 되는가?")
     public void add() throws Exception {
@@ -63,12 +69,14 @@ class CafeKioskTest {
     public void sumTotalPrice() {
         // given
         CafeKiosk cafeKiosk = new CafeKiosk();
-        cafeKiosk.add(new Americano());
-        cafeKiosk.add(new Latte());
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+        cafeKiosk.add(americano);
+        cafeKiosk.add(latte);
         // when
-        int totalPrice = cafeKiosk.calculateTotalPrice();
+        int price = cafeKiosk.calculateTotalPrice();
         // then
-        assertThat(totalPrice).isEqualTo(8500);
+        Assertions.assertThat(price).isEqualTo(8500);
     }
 
     @Test
