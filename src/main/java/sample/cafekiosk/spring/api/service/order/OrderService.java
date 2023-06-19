@@ -2,6 +2,7 @@ package sample.cafekiosk.spring.api.service.order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.order.request.order.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
 import sample.cafekiosk.spring.domain.order.Order;
@@ -13,6 +14,7 @@ import sample.cafekiosk.spring.domain.stock.Stock;
 import sample.cafekiosk.spring.domain.stock.StockRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +26,8 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
+
+    @Transactional
     public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredOrderDateTime) {
         // product
         List<String> productNumbers = request.getProductNumbers();
@@ -41,7 +45,7 @@ public class OrderService {
         Map<String, Long> productCountingMap = stockProductNumbers.stream()
                 .collect(Collectors.groupingBy(p -> p, Collectors.counting()));
         // 재고 차감 시도
-        for(String stockProductNumber : stockProductNumbers) {
+        for(String stockProductNumber : new HashSet<>(stockProductNumbers)) {
             Stock stock = stockMap.get(stockProductNumber);
             int orderQuantity = productCountingMap.get(stockProductNumber).intValue();
             if (stock.isQuantityLessThan(orderQuantity)) {
