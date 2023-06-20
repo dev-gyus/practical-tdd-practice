@@ -33,7 +33,7 @@ class StockRepositoryTest {
         stockRepository.saveAll(List.of(stock1, stock2, stock3));
 
         // when
-        List<Stock> stocks = stockRepository.findAllByProductNumberIn(List.of("001", "002"));
+        List<Stock> stocks = stockRepository.findAllByProductNumberIn(List.of("001", "002"));;
 
         // then
         assertThat(stocks).hasSize(2)
