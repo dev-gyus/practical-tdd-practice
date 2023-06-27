@@ -50,6 +50,9 @@ class OrderServiceTest {
         stockRepository.deleteAll();
     }
 
+    /**
+     * 재고 감소 -> 동시성 고민
+     */
     @DisplayName("주문 번호 리스트를 받아 주문을 생성한다.")
     @Test
     public void createOrder() throws Exception{
@@ -142,6 +145,38 @@ class OrderServiceTest {
                         tuple("001", 0),
                         tuple("002", 1),
                         tuple("003", 1)
+                );
+    }
+
+    @DisplayName("재고와 부족한 상품으로 주문을 생성하는 경우 예외가 발생한다.")
+    @Test
+    public void createOrderWithNoStock() throws Exception{
+        //given
+        Product product1 = createProducts(BOTTLE, "001", 1000);
+        Product product2 = createProducts(BOTTLE, "002", 3000);
+        Product product3 = createProducts(BAKERY, "003", 5000);
+        productRepository.saveAll(List.of(product1, product2, product3));
+        OrderCreateRequest orderCreateRequest = OrderCreateRequest.builder()
+                .productNumbers(List.of("001", "001", "002", "003"))
+                .build();
+        Stock stock1 = Stock.create("001", 1);
+        Stock stock2 = Stock.create("002", 1);
+        Stock stock3 = Stock.create("003", 2);
+        stockRepository.saveAll(List.of(stock1, stock2, stock3));
+
+        //when
+        LocalDateTime registeredDateTime = LocalDateTime.now();
+        Assertions.assertThatThrownBy(() -> orderService.createOrder(orderCreateRequest, registeredDateTime))
+                .isInstanceOf(IllegalArgumentException.class).hasMessage("재고가 부족한 상품이 있습니다.");
+
+        //then
+        List<Stock> stocks = stockRepository.findAll();
+        assertThat(stocks).hasSize(3)
+                .extracting("productNumber", "quantity")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1),
+                        tuple("002", 1),
+                        tuple("003", 2)
                 );
     }
 
