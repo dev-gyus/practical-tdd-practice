@@ -47,7 +47,7 @@ class ProductServiceTest {
                 .price(5000)
                 .build();
         //when
-        ProductCreateResponse response = productService.createProduct(request);
+        ProductCreateResponse response = productService.createProduct(request.toServiceRequest());
         //them
         Assertions.assertThat(response)
                 .extracting(
