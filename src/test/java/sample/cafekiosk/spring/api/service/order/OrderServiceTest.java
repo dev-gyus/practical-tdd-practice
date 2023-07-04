@@ -138,7 +138,7 @@ class OrderServiceTest {
                         tuple("002", 3000),
                         tuple("003", 5000)
                 );;
-        List<Stock> stocks = stockRepository.findAll();
+        List<Stock> stocks = stockRepository.findAll();;
         assertThat(stocks).hasSize(3)
                 .extracting("productNumber", "quantity")
                 .containsExactlyInAnyOrder(
