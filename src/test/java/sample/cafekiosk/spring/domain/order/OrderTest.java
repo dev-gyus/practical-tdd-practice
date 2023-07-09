@@ -55,7 +55,7 @@ class OrderTest {
 
         // when
         LocalDateTime registeredDateTime = LocalDateTime.now();
-        Order order = new Order(List.of(product1, product2, product3), registeredDateTime);
+        Order order = Order.create(List.of(product1, product2, product3), registeredDateTime);
 
         // then
         assertThat(order.getRegisteredDateTime()).isEqualTo(registeredDateTime);
