@@ -79,7 +79,7 @@ class OrderStatisticsServiceTest {
         List<MailSendHistory> histories = mailSendHistoryRepository.findAll();
         assertThat(histories).hasSize(1)
                 .extracting("content")
-                .contains("총 매출 합계는 12000원 입니다");
+                .contains("총 매출 합계는 12000원 입니다");;
     }
 
     private Product createProducts(ProductType type, String productNumber, int price) {
