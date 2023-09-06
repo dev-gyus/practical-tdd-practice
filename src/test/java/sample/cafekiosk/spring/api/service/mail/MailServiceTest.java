@@ -26,7 +26,7 @@ class MailServiceTest {
     MailSendHistoryRepository mailSendHistoryRepository;
     @InjectMocks
     MailService mailService;
-
+//;;
     @DisplayName("메일 전송 테스트")
     @Test
     public void sendMail() throws Exception{
