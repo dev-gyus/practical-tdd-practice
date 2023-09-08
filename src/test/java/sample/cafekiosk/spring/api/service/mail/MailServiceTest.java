@@ -34,7 +34,7 @@ class MailServiceTest {
         when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString())).thenReturn(true);
         when(mailSendHistoryRepository.save(any())).thenReturn(null);
 
-        //when
+        //when;;
         boolean result = mailService.sendMail("", "", "", "");
 
         //then
